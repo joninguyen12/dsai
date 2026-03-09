@@ -14,6 +14,9 @@
     }
   },
   "files": {
+    "app": {
+      "checksum": "35860dc714b2fd9c85005aedc364bfd7"
+    },
     "requirements.txt": {
       "checksum": "1c3a209a7edbe2aafcb3709c870a737a"
     },
