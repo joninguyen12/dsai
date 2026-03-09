@@ -17,9 +17,6 @@
     "requirements.txt": {
       "checksum": "1c3a209a7edbe2aafcb3709c870a737a"
     },
-    ".env": {
-      "checksum": "a93ec826bb065a3964e9fc8e120e9298"
-    },
     "API_README.md": {
       "checksum": "87b977b92d8f73de59c6d596393d93b5"
     },
@@ -34,9 +31,6 @@
     },
     "README_Testing.md": {
       "checksum": "dd5572ae950c25fef6f44528bb69bcd9"
-    },
-    "__init__.py": {
-      "checksum": "a274fb6bfe601296198dbbfe645af474"
     },
     "ai_summary.py": {
       "checksum": "a0efafc36a48336b424013833d8a2309"
