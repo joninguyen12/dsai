@@ -27,5 +27,5 @@ jobs:
           url: ${{ secrets.CONNECT_SERVER }}
           api-key: ${{ secrets.CONNECT_API_KEY }}
           access-type: acl
-          dir: 04_hackathon
+          dir: 05_hackathon
           force: false
