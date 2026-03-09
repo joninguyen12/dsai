@@ -29,3 +29,5 @@ jobs:
           access-type: acl
           dir: 05_hackathon
           force: false
+          show-logs: true
+          update-env: true
