@@ -1,0 +1,33 @@
+name: Deploy Hackathon FastAPI to Posit Connect
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '05_hackathon_api/**'
+      - '.github/workflows/deploy-hackathon-api.yml'
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.12'
+
+      - name: Publish FastAPI to Posit Connect
+        uses: rstudio/actions/connect-publish@main
+        with:
+          url: ${{ secrets.CONNECT_SERVER }}
+          api-key: ${{ secrets.CONNECT_API_KEY }}
+          access-type: acl
+          dir: 05_hackathon_api
+          force: false
+          show-logs: true
+          update-env: true
+
