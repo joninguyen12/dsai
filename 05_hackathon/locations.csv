@@ -1,0 +1,6 @@
+id,name,city,neighborhood,freeway
+loc-1,NB I-5 @ Seneca,Seattle,Downtown,I-5
+loc-2,SB I-5 @ Northgate,Seattle,Northgate,I-5
+loc-3,WB SR-520 @ Montlake,Seattle,Montlake,SR-520
+loc-4,EB I-90 @ Rainier,Seattle,Mount Baker,I-90
+loc-5,SB SR-99 @ Aurora Bridge,Seattle,Fremont,SR-99

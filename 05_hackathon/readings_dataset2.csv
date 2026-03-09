@@ -1,0 +1,7 @@
+id,location_id,observed_at,congestion_index,speed_mph,vehicle_count,travel_time_index,is_incident
+w1,loc-1,2025-03-09T12:00:00Z,10,55,120,1.0,false
+w2,loc-1,2025-03-09T12:30:00Z,15,52,130,1.0,false
+w3,loc-2,2025-03-09T12:00:00Z,8,60,90,1.0,false
+w4,loc-2,2025-03-09T12:30:00Z,12,57,100,1.0,false
+w5,loc-3,2025-03-09T12:00:00Z,5,62,70,1.0,false
+w6,loc-3,2025-03-09T12:30:00Z,7,60,75,1.0,false
