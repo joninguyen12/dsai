@@ -17,9 +17,6 @@
     "requirements.txt": {
       "checksum": "1c3a209a7edbe2aafcb3709c870a737a"
     },
-    ".DS_Store": {
-      "checksum": "638101d32bceb8d9628d2f732e8f3d1e"
-    },
     ".env": {
       "checksum": "a93ec826bb065a3964e9fc8e120e9298"
     },
