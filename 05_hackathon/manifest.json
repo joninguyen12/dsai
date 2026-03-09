@@ -1,0 +1,75 @@
+{
+  "version": 1,
+  "locale": "en_US.UTF-8",
+  "metadata": {
+    "appmode": "python-shiny",
+    "entrypoint": "app:app"
+  },
+  "python": {
+    "version": "3.9.7",
+    "package_manager": {
+      "name": "pip",
+      "version": "26.0.1",
+      "package_file": "requirements.txt"
+    }
+  },
+  "files": {
+    "requirements.txt": {
+      "checksum": "1c3a209a7edbe2aafcb3709c870a737a"
+    },
+    ".DS_Store": {
+      "checksum": "194577a7e20bdcc7afbb718f502c134c"
+    },
+    "API_README.md": {
+      "checksum": "87b977b92d8f73de59c6d596393d93b5"
+    },
+    "README.md": {
+      "checksum": "b9ce47ebc165702c311ccf12c7461a7b"
+    },
+    "README_Shiny_App.md": {
+      "checksum": "dda23fbf6cbe697dd79cfc674c4387ab"
+    },
+    "README_Supabase.md": {
+      "checksum": "289d4f06ce4150b16e1e306a9963862c"
+    },
+    "README_Testing.md": {
+      "checksum": "dd5572ae950c25fef6f44528bb69bcd9"
+    },
+    "READ_hackathon.md": {
+      "checksum": "6bbae2643d2d410e8f5d9f3bd094434e"
+    },
+    "ai_summary.py": {
+      "checksum": "a0efafc36a48336b424013833d8a2309"
+    },
+    "app.py": {
+      "checksum": "7b5410914a39f93e9b1880ed379f7a40"
+    },
+    "generate_congestion_data.py": {
+      "checksum": "e4fa282fc2060d5b2edbc0022c75cb19"
+    },
+    "locations.csv": {
+      "checksum": "53becb8e2a79519082b908074c731d22"
+    },
+    "main.py": {
+      "checksum": "f37084c2281f269f762c11171fc7b0a4"
+    },
+    "manifestme.sh": {
+      "checksum": "7deecf7a8f086faca19dd6b5faf33ed9"
+    },
+    "readings_dataset1.csv": {
+      "checksum": "41b36d5d0a7f86fc98bc43ec6426a5e1"
+    },
+    "readings_dataset2.csv": {
+      "checksum": "eeacd1fe255db4bc4716a593e1811c77"
+    },
+    "readings_dataset3.csv": {
+      "checksum": "e5b3562eb9a20409e7a532596bcb382c"
+    },
+    "run_dashboard.sh": {
+      "checksum": "8e653072c9a99a06189caf820080ded5"
+    },
+    "seed_locations.py": {
+      "checksum": "2dc48f7ddb4464b93a5437f5ecdae70e"
+    }
+  }
+}
