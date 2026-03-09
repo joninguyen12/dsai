@@ -3,7 +3,7 @@
   "locale": "en_US.UTF-8",
   "metadata": {
     "appmode": "python-shiny",
-    "entrypoint": "shiny.express.app:app.py"
+    "entrypoint": "shiny.express.app:app"
   },
   "python": {
     "version": "3.12.4",
