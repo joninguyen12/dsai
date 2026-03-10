@@ -113,49 +113,6 @@ At a high level, the system has four core components that form the required end-
 4. **AI – Ollama Cloud (`ai_summary.py`)**
    - Receives a compact JSON slice from the dashboard and returns a short, actionable summary.
 
-This matches the midterm DL challenge specification: **Supabase database → REST API → dashboard → AI model**.
-
-**Conceptual diagram:**
-
-```mermaid
-graph TB
-    subgraph Data["Data Layer (Supabase/Postgres)"]
-        D1[locations table]
-        D2[congestion_readings table]
-    end
-
-    subgraph API["API Layer (FastAPI, api/main.py)"]
-        A1[/GET /locations/]
-        A2[/GET /readings/]
-        A3[/GET /readings/top/]
-        A4[/GET /readings/summary/]
-    end
-
-    subgraph App["App Layer (Shiny dashboard, dashboard/app.py)"]
-        U1[Controls: time window, location]
-        U2[Traffic Hotspots table]
-        U3[Explore Trends chart]
-        U4[AI Summary view]
-    end
-
-    subgraph AI["AI Service (ai_summary.py + Ollama Cloud)"]
-        L1[summarize_congestion_data()]
-    end
-
-    D1 --> A1
-    D2 --> A2
-    D2 --> A3
-    D2 --> A4
-
-    A1 --> U1
-    A1 --> U2
-    A2 --> U3
-    A2 --> U4
-    A3 --> U2
-    A2 --> L1
-    L1 --> U4
-```
-
 ---
 
 ## 🔐 Environment Variables (.env)
