@@ -106,24 +106,25 @@ def make_time_range(preset: str):
 # UI — keep page_opts minimal; render our own header below
 ui.page_opts(title="", fillable=True)
 
-# Remove stray "True" and also strip card-like borders/background for a full-screen feel
+# Remove stray boolean text ("True"/"False") and also strip card-like borders/background
 ui.tags.script(
     """
     (function() {
-      function removeTrueText() {
+      function removeBoolText() {
         const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT, null, false);
         let n;
         while ((n = walker.nextNode())) {
-          if (n.textContent.trim() === 'True') {
-            n.parentNode.removeChild(n);
-            return;
+          const txt = n.textContent && n.textContent.trim();
+          if (txt === 'True' || txt === 'False') {
+            const parent = n.parentNode;
+            if (parent) parent.removeChild(n);
           }
         }
       }
       if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', removeTrueText);
+        document.addEventListener('DOMContentLoaded', removeBoolText);
       } else {
-        removeTrueText();
+        removeBoolText();
       }
     })();
     """

@@ -3,22 +3,33 @@
   "locale": "en_US.UTF-8",
   "metadata": {
     "appmode": "python-shiny",
-    "entrypoint": "shiny.express.app:app"
+    "entrypoint": "shiny.express.app:app_2e_py"
   },
   "python": {
-    "version": "3.12.4",
+    "version": "3.9.7",
     "package_manager": {
       "name": "pip",
       "version": "26.0.1",
       "package_file": "requirements.txt"
     }
   },
+  "environment": {
+    "python": {
+      "requires": "~=3.12.0"
+    }
+  },
   "files": {
-    "app": {
-      "checksum": "35860dc714b2fd9c85005aedc364bfd7"
-    },
     "requirements.txt": {
       "checksum": "1c3a209a7edbe2aafcb3709c870a737a"
+    },
+    ".DS_Store": {
+      "checksum": "194577a7e20bdcc7afbb718f502c134c"
+    },
+    ".env": {
+      "checksum": "8586ac110e59f021cc661f3e6b6b9048"
+    },
+    ".python-version": {
+      "checksum": "0885a8b0e7355de614d6685033e058f6"
     },
     "API_README.md": {
       "checksum": "87b977b92d8f73de59c6d596393d93b5"
@@ -41,8 +52,11 @@
     "ai_summary.py": {
       "checksum": "a0efafc36a48336b424013833d8a2309"
     },
+    "app": {
+      "checksum": "35860dc714b2fd9c85005aedc364bfd7"
+    },
     "app.py": {
-      "checksum": "7b5410914a39f93e9b1880ed379f7a40"
+      "checksum": "fa697b99416440e37d70e07a77b0af81"
     },
     "generate_congestion_data.py": {
       "checksum": "e4fa282fc2060d5b2edbc0022c75cb19"
@@ -51,10 +65,16 @@
       "checksum": "53becb8e2a79519082b908074c731d22"
     },
     "main.py": {
-      "checksum": "f37084c2281f269f762c11171fc7b0a4"
+      "checksum": "1d51aafe9cbb26d7b0073cde05aa87e0"
     },
     "manifestme.sh": {
-      "checksum": "7deecf7a8f086faca19dd6b5faf33ed9"
+      "checksum": "d08842c81373db51bbaf03131ba5170b"
+    },
+    "push_shiny.sh": {
+      "checksum": "07c3f86c30cd8b54804ca0e592508519"
+    },
+    "pushme.sh": {
+      "checksum": "35defe142e71b33f5be8f11da6785c84"
     },
     "readings_dataset1.csv": {
       "checksum": "41b36d5d0a7f86fc98bc43ec6426a5e1"

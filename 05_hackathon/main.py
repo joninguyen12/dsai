@@ -19,8 +19,7 @@ except ImportError:
 SUPABASE_URL = (os.getenv("SUPABASE_URL") or "").rstrip("/")
 SUPABASE_KEY = os.getenv("SUPABASE_KEY") or os.getenv("SUPABASE_PUBLIC_KEY") or ""
 
-if not SUPABASE_URL or not SUPABASE_KEY:
-    raise RuntimeError("Set SUPABASE_URL and SUPABASE_KEY in .env. Get from Supabase -> Project Settings -> API.")
+SUPABASE_CONFIG_OK = bool(SUPABASE_URL and SUPABASE_KEY)
 
 HEADERS = {
     "apikey": SUPABASE_KEY,
@@ -39,6 +38,11 @@ app.add_middleware(CORSMiddleware, allow_origins=["*"], allow_methods=["*"], all
 
 def supabase_get(table: str, params: Optional[dict] = None) -> list:
     """GET from a Supabase table with PostgREST query params."""
+    if not SUPABASE_CONFIG_OK:
+        raise HTTPException(
+            status_code=500,
+            detail="Supabase is not configured. Set SUPABASE_URL and SUPABASE_KEY on Posit Connect.",
+        )
     r = requests.get(f"{SUPABASE_URL}/rest/v1/{table}", headers=HEADERS, params=params or {}, timeout=30)
     r.raise_for_status()
     return r.json()
@@ -187,6 +191,7 @@ def root():
     return {
         "message": "Seattle Congestion API",
         "docs": "/docs",
+        "supabase_config_ok": SUPABASE_CONFIG_OK,
         "endpoints": [
             "GET /locations?freeway=&city=",
             "GET /locations/{id}",
