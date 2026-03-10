@@ -7,17 +7,24 @@ An end-to-end system that surfaces congestion patterns for key Seattle freeway l
 - A **Python Shiny** dashboard for exploring hotspots, trends, and tables.
 - An **AI-powered summary** layer (Ollama Cloud) that turns data slices into human-readable bullet points.
 
+**Live app:** [Seattle Congestion Insights on Posit Connect](https://connect.systems-apps.com/content/8e824744-21c9-4638-a9a8-c4507cf7947f)
+
+---
+
 ## Table of Contents
 
 - [Quick Start](#quick-start)
-- [Architecture Overview](#architecture-overview)
+- [System Architecture](#system-architecture)
+- [Environment Variables (.env)](#environment-variables-env)
 - [Key Components](#key-components)
 - [Data Flow](#data-flow)
 - [Usage Guide](#usage-guide)
 - [Project Structure](#project-structure)
 - [Development Notes](#development-notes)
 
-## Quick Start
+---
+
+## 🚀 Quick Start
 
 ### 1. Set up Python environment
 
@@ -32,7 +39,7 @@ pip install -r requirements.txt
 
 ### 2. Configure environment variables
 
-Create a `.env` file in `05_hackathon/` (same folder as `requirements.txt`) with:
+Create a `.env` file in `05_hackathon/` (same folder as `requirements.txt`). See [Environment Variables (.env)](#environment-variables-env) for the full reference. Minimal local setup:
 
 ```bash
 # Supabase (congestion database)
@@ -68,13 +75,7 @@ You have two options:
 From `05_hackathon/`:
 
 ```bash
-uvicorn seattle-congestion-app.api.main:app --reload
-```
-
-If you run from within `seattle-congestion-app/`:
-
-```bash
-uvicorn api.main:app --reload
+uvicorn main:app --reload
 ```
 
 Then visit:
@@ -84,37 +85,37 @@ Then visit:
 
 ### 5. Run the Shiny dashboard
 
-From `05_hackathon/`:
+From `05_hackathon/` (recommended: use the script so the project venv is used):
 
 ```bash
-shiny run seattle-congestion-app/dashboard/app.py
+./run_dashboard.sh
 ```
 
-Or from within `seattle-congestion-app/`:
+Or explicitly:
 
 ```bash
-shiny run dashboard/app.py
+shiny run app.py
 ```
 
-Open the provided URL in your browser (typically `http://127.0.0.1:8000` for the app server; the Shiny CLI will print the exact port).
+Open the URL shown (e.g. `http://127.0.0.1:8001`).
 
-## Architecture Overview
+## 🏗️ System Architecture
 
 At a high level, the system has four core components that form the required end-to-end pipeline:
 
 1. **Database – Supabase/Postgres**
    - Hosts the `locations` and `congestion_readings` tables.
    - Can be seeded via scripts or the `test/` CSVs.
-2. **REST API – FastAPI (`api/main.py`)**
+2. **REST API – FastAPI (`main.py`)**
    - Reads from Supabase using the REST interface and exposes congestion-focused endpoints.
-3. **Dashboard – Python Shiny (`dashboard/app.py`)**
+3. **Dashboard – Python Shiny (`app.py`)**
    - Calls the REST API, visualizes congestion, and lets a user select windows/locations.
 4. **AI – Ollama Cloud (`ai_summary.py`)**
    - Receives a compact JSON slice from the dashboard and returns a short, actionable summary.
 
 This matches the midterm DL challenge specification: **Supabase database → REST API → dashboard → AI model**.
 
-Conceptual diagram:
+**Conceptual diagram:**
 
 ```mermaid
 graph TB
@@ -155,11 +156,31 @@ graph TB
     L1 --> U4
 ```
 
-## Key Components
+---
+
+## 🔐 Environment Variables (.env)
+
+Define these in a `.env` file in `05_hackathon/` (or export in your shell). Do not commit `.env` to Git.
+
+| Variable | Required | Used by | Description |
+|----------|----------|---------|-------------|
+| `SUPABASE_URL` | Yes (API) | FastAPI | Supabase project URL, e.g. `https://YOUR_REF.supabase.co` (no trailing slash). |
+| `SUPABASE_KEY` | Yes (API) | FastAPI | Supabase anon or service role key (from Project Settings → API). |
+| `CONGESTION_API_URL` | No | Shiny app | Base URL of the congestion API. Default: `http://127.0.0.1:8000`. On Posit Connect, set to the deployed API content URL. |
+| `API_URL` | No | Shiny app | Fallback if `CONGESTION_API_URL` is not set; same meaning. |
+| `OLLAMA_BASE_URL` | No | ai_summary | Ollama Cloud base URL. Default: `https://ollama.com`. |
+| `OLLAMA_API_KEY` | Yes (AI) | ai_summary | API key for Ollama Cloud (required for AI summary tab). |
+| `OLLAMA_MODEL` | No | ai_summary | Model name, e.g. `gpt-oss:120b`. |
+| `CONNECT_SERVER` | Deploy | pushme.sh / push_shiny.sh | Posit Connect server URL for `rsconnect deploy`. |
+| `CONNECT_API_KEY` | Deploy | pushme.sh / push_shiny.sh | Posit Connect API key for deployment. |
+
+---
+
+## 🧩 Key Components
 
 ### Core Files
 
-- **`api/main.py`** — FastAPI application:
+- **`main.py`** — FastAPI application:
   - Loads Supabase credentials from environment/.env.
   - Defines helper functions for paginated Supabase queries.
   - Exposes endpoints:
@@ -169,7 +190,7 @@ graph TB
     - `GET /readings/top`
     - `GET /readings/summary`
 
-- **`dashboard/app.py`** — Python Shiny dashboard:
+- **`app.py`** — Python Shiny dashboard:
   - Connects to the FastAPI service via `CONGESTION_API_URL`.
   - Provides a sidebar for time range and location filters.
   - Tabs for:
@@ -185,10 +206,12 @@ graph TB
 ### Supporting Files
 
 - **`test/`** — Ready-to-import CSV test data for quick demos and regression tests.
-- **`scripts/` (in `05_hackathon/`)** — Seeding scripts for a larger synthetic dataset.
-- **`.env`** — Local configuration for Supabase, API URL, and AI provider (not committed to Git).
+- **`seed_locations.py`**, **`generate_congestion_data.py`** — Seed Supabase locations and synthetic readings.
+- **`.env`** — Local configuration (see [Environment Variables (.env)](#environment-variables-env)); not committed to Git.
 
-## Data Flow
+---
+
+## 📊 Data Flow
 
 End-to-end flow for the main dashboard path (database → API → dashboard → AI):
 
@@ -205,7 +228,7 @@ End-to-end flow for the main dashboard path (database → API → dashboard → 
      - Optionally calls `GET /readings/summary` when you want a quick aggregate snapshot.
 
 3. **Dashboard (Python Shiny)**
-   - `dashboard/app.py`:
+   - `app.py`:
      - Converts raw JSON into pandas DataFrames.
      - Joins readings with locations for human-friendly labels.
      - Aggregates readings to hourly means for trend plots (per-location or all locations).
@@ -221,7 +244,7 @@ End-to-end flow for the main dashboard path (database → API → dashboard → 
      - Sends a non-streaming request to Ollama Cloud.
      - Returns 2–6 Markdown bullet points, which the dashboard lightly formats as HTML.
 
-## Usage Guide
+## 📖 Usage Guide
 
 ### API usage examples
 
@@ -282,32 +305,34 @@ python seattle-congestion-app/ai_summary.py data/readings_window.json \
   --question "How does congestion here compare to a typical weekday PM peak?"
 ```
 
-## Project Structure
+## 📁 Project Structure
 
 Key parts of this app within the course repo:
 
 ```text
 05_hackathon/
-├── seattle-congestion-app/
-│   ├── api/
-│   │   └── main.py             # FastAPI service exposing congestion endpoints
-│   ├── dashboard/
-│   │   └── app.py              # Python Shiny dashboard UI + server
-│   ├── ai_summary.py           # Ollama Cloud helper for AI summaries
-│   ├── test/
-│   │   ├── locations.csv       # Test locations
-│   │   ├── readings_dataset1.csv
-│   │   ├── readings_dataset2.csv
-│   │   ├── readings_dataset3.csv
-│   │   └── README.md           # Test data documentation
-│   └── README.md               # This file (app-level docs)
-├── scripts/
-│   ├── seed_locations.py       # Seed Supabase locations
-│   └── generate_congestion_data.py  # Generate synthetic congestion readings
-└── requirements.txt            # Python dependencies for hackathon projects
+├── main.py                     # FastAPI service (congestion API)
+├── app.py                      # Shiny dashboard UI + server
+├── ai_summary.py               # Ollama Cloud helper for AI summaries
+├── seed_locations.py           # Seed Supabase locations table
+├── generate_congestion_data.py # Generate synthetic congestion readings
+├── requirements.txt            # Python dependencies
+├── manifest.json               # Posit Connect manifest (Shiny or API)
+├── manifestme.sh               # Generate manifest for Shiny
+├── push_shiny.sh               # Deploy Shiny app to Posit Connect
+├── pushme.sh                   # Deploy FastAPI app to Posit Connect
+├── run_dashboard.sh            # Run Shiny dashboard locally
+├── locations.csv               # Optional test locations
+├── readings_dataset1.csv       # Optional test readings
+├── readings_dataset2.csv
+├── readings_dataset3.csv
+├── CODEBOOK.md                 # Data & API variable reference
+└── README.md                   # This file
 ```
 
-## Development Notes
+---
+
+## 📝 Development Notes
 
 ### Dependencies
 
