@@ -1,6 +1,59 @@
-## Test datasets for Seattle congestion app
+## Test datasets and test executions for Seattle congestion app
 
-This folder contains small, ready-to-import CSVs that exercise the main features of the Seattle congestion API and Shiny dashboard. They are meant for local development, demos, and regression checks.
+This document covers (1) **test datasets** (CSVs to import) and (2) **2–3 test executions** you can run to demonstrate that the dashboard and API work correctly for grading or demos.
+
+---
+
+## Test executions (2–3 scenarios)
+
+Prerequisites: API and dashboard are running (see main [README](README.md) Quick Start). Data is seeded (e.g. `seed_locations.py` + `generate_congestion_data.py`, or the CSVs below).
+
+### Test 1: Controls update the data in the tabs
+
+**What it checks:** Changing sidebar controls (Time Range, Location) updates the data shown in the dashboard tabs (Traffic Hotspots, Explore Trends).
+
+**Steps:**
+
+1. Open the Shiny dashboard (e.g. `./run_dashboard.sh` → browser).
+2. Note the **Traffic Hotspots** table: number of rows and which locations appear (or “All locations”).
+3. In the **sidebar**, change **Time Range** (e.g. from “Last 7 Days” to “Last 24 Hours”) or change **Location** from “All Locations” to a specific intersection.
+4. **Pass:** The Traffic Hotspots table and/or the Explore Trends chart update to reflect the new filters (different row count, different location(s), or different time window). No error messages.
+
+**Optional:** Repeat with **Explore Trends** visible; confirm the chart series or time axis change when you change Time Range or Location.
+
+### Test 2: AI Summary tab generates a new summary
+
+**What it checks:** Using the AI Summary tab produces an AI-generated summary for the current time window and location; the summary is visible and relevant to the selected filters.
+
+**Steps:**
+
+1. In the dashboard sidebar, set **Time Range** (e.g. “Last 7 Days”) and **Location** (e.g. “All Locations” or one intersection).
+2. Click the **🤖 AI Summary** tab.
+3. Wait a few seconds for the summary to load (Ollama Cloud call).
+4. **Pass:** A block of bullet-point text appears (e.g. **Worst hotspots**, **Clear routes**, **Trends**). The content refers to congestion/locations and matches the selected window and filters. No “AI error” or “Select a time range first” unless you intentionally left filters invalid.
+5. (Optional) Change **Time Range** or **Location**, then click back to **AI Summary** or refresh the view. **Pass:** A new or updated summary is generated for the new filters.
+
+**Note:** The AI Summary is generated when you view the tab with valid filters; there is no separate “Generate” button—opening the tab and changing filters triggers a new summary.
+
+### Test 3: Error handling — invalid time range or no data shows a clear message
+
+**What it checks:** When there is no data for the selected filters (e.g. time range with no readings), the app shows a clear message instead of crashing or a blank/error screen.
+
+**Steps:**
+
+1. Open the Shiny dashboard with the API running and at least one location seeded (readings optional for this test).
+2. **No-data case:** Set **Time Range** to a window that has no readings in the database (e.g. “Last 24 Hours” if you only seeded old data, or pick a **Custom Range** entirely outside your seeded dates). Open **Traffic Hotspots** and **Explore Trends**.
+3. **Pass:** You see a clear message such as “No readings in this window,” “Select a time range,” “No readings match filters,” or an empty-state message—not a stack trace, blank panel, or uncaught error.
+4. **AI Summary:** With the same “no data” filters, open the **🤖 AI Summary** tab.
+5. **Pass:** You see a message like “No readings in this window to summarize” or “Select a time range first”—not a crash or raw error.
+
+**Demonstration:** Show that the app degrades gracefully: invalid or empty data produces user-facing messages, not crashes.
+
+---
+
+## Test datasets (CSVs)
+
+The following CSVs are for seeding the database. They exercise the main features of the Seattle congestion API and Shiny dashboard and are meant for local development, demos, and regression checks.
 
 - **Target tables**: `locations` and `congestion_readings` in your Supabase/Postgres database.
 - **Import format**: Standard CSV with a header row and UTF-8 text.
@@ -89,8 +142,8 @@ Import this first into the `locations` table so that all reading datasets can re
    - You can load them separately for focused tests or combine them all for a richer history.
 
 3. **Run the API and dashboard**  
-   - Start the FastAPI service (`uvicorn api.main:app --reload`) and confirm `/locations` and `/readings` return data.
-   - Start the Shiny app (`shiny run dashboard/app.py`) and explore:
+   - Start the FastAPI service (`uvicorn main:app --reload`) and confirm `/locations` and `/readings` return data.
+   - Start the Shiny app (`./run_dashboard.sh` or `shiny run app.py`) and explore:
      - **Traffic Hotspots** for top-N congested observations.
      - **Explore Trends** for time-series behavior.
      - **AI Summary** for natural-language explanations of the selected window.
