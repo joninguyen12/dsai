@@ -1,6 +1,6 @@
 # Seattle Congestion Insights App
 
-End-to-end system for Seattle-area freeway congestion: **Supabase → FastAPI → Shiny dashboard → AI summary** (Ollama Cloud).
+This app surfaces congestion patterns for key Seattle-area freeway locations using synthetic time-series data in a **Supabase → FastAPI → Shiny dashboard → AI summary** (Ollama Cloud) pipeline. Users explore traffic hotspots and trends by time window and location, and can request short, AI-generated bullet-point summaries of conditions. The live dashboard and API are deployable to Posit Connect.
 
 **Live app:** [Seattle Congestion Insights on Posit Connect](https://connect.systems-apps.com/content/8e824744-21c9-4638-a9a8-c4507cf7947f)
 
