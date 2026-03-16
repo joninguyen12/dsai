@@ -1,7 +1,6 @@
-# 04_rules.py
-# Agent Rules with YAML
-# Pairs with 04_rules.R
-# Tim Fraser
+# 00_multiagents.py
+# LAB: Multi-Agent Rules with YAML
+# Joni Nguyen
 
 # This script demonstrates how to use rules in an agentic workflow to make agents more precise.
 # Rules are incorporated into the agent's role/system message to guide behavior.
