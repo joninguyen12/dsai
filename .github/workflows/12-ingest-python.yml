@@ -42,15 +42,8 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: '3.11'
-
-      - name: CACHE PIP PACKAGES
-        uses: actions/cache@v4
-        with:
-          path: ~/.cache/pip
-          key: ${{ runner.os }}-pip-ingest-${{ hashFiles('.github/workflows/12-ingest-python.yml', '12_end/01_ingest_traffic.py') }}
-          restore-keys: |
-            ${{ runner.os }}-pip-ingest-
-            ${{ runner.os }}-pip-
+          cache: 'pip'
+          cache-dependency-path: .github/workflows/12-ingest-python.yml
 
       - name: INSTALL PYTHON DEPENDENCIES
         run: pip install requests pandas
